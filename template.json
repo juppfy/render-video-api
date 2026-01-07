@@ -28,18 +28,18 @@
   ],
   "variables": {
     "JWT_SECRET": {
-      "required": true,
-      "description": "A random secret string for JWT token signing. Generate with: openssl rand -base64 32"
+      "description": "Auto-generated secret for JWT token signing",
+      "generator": {
+        "type": "secret"
+      }
     },
     "CORS_ORIGINS": {
-      "required": false,
-      "default": "*",
-      "description": "CORS allowed origins (default: * for all origins)"
+      "description": "CORS allowed origins",
+      "default": "*"
     },
     "RAILWAY_BUCKET_REGION": {
-      "required": false,
-      "default": "us-east-1",
-      "description": "Railway Bucket region"
+      "description": "Railway Bucket region",
+      "default": "us-east-1"
     }
   }
 }
