@@ -38,65 +38,125 @@ This guide walks you through creating and publishing a Railway template so other
 
 ---
 
-## Step 3: Configure Template Variables
+## Step 3: Configure Service Settings
 
-Railway will show you all the environment variables. Configure them:
+Before creating the template, configure each service's settings:
 
-1. **For `JWT_SECRET`**:
-   - Set it to **"Auto-generate"** or **"Secret Generator"**
-   - This ensures Railway creates a random secret for each deployment
-   - Users won't need to provide this
+### For Web API Service:
 
-2. **For bucket variables** (`RAILWAY_BUCKET_NAME`, `RAILWAY_BUCKET_ENDPOINT`, etc.):
-   - These should be **auto-referenced** from the Bucket service
-   - Railway will handle this automatically
+1. **Go to your web-api service** (the main service)
+2. **Click "Settings" tab**
+3. **Configure these settings**:
 
-3. **For `DATABASE_URL`**:
-   - This is **auto-set** by the Postgres service
-   - No configuration needed
+   - **Start Command**: `npm start` (this runs migrations automatically)
+   - **Pre-deploy Command** (optional): Leave empty or set to `npm run build`
+   - **Healthcheck Path**: `/health`
+   - **Public Networking**: Enable HTTP Proxy (so API is accessible)
+   - **Restart Policy**: On Failure, Max retries: 10
 
-4. **For optional variables** (`CORS_ORIGINS`, `RAILWAY_BUCKET_REGION`):
-   - Set defaults: `CORS_ORIGINS = *`, `RAILWAY_BUCKET_REGION = us-east-1`
+### For Worker Service:
 
----
+1. **Go to your worker service**
+2. **Click "Settings" tab**
+3. **Configure these settings**:
 
-## Step 4: Review Service Configuration
+   - **Start Command**: `npm run start:worker`
+   - **Public Networking**: Disable (worker doesn't need to be public)
+   - **Restart Policy**: On Failure, Max retries: 10
 
-Railway will show you the services that will be created:
+### For Postgres and Bucket:
 
-1. **web-api service**:
-   - Source: Your GitHub repo
-   - Start Command: `npm start` (which runs migrations then starts server)
-   - ✅ Correct
-
-2. **worker service**:
-   - Source: Your GitHub repo
-   - Start Command: `npm run start:worker`
-   - ✅ Correct
-
-3. **postgres service**:
-   - Type: PostgreSQL
-   - ✅ Auto-provisioned
-
-4. **bucket service**:
-   - Type: Railway Bucket
-   - ✅ Auto-provisioned
-
-**Verify all services look correct**, then proceed.
+- These are **auto-configured** by Railway
+- No manual settings needed
 
 ---
 
-## Step 5: Publish the Template
+## Step 4: Set Up Environment Variables (Before Template Creation)
 
-1. **Click "Publish Template"** or **"Create Template"** button
-2. **Railway will process and publish your template**
-3. **You'll receive a Template ID** (looks like: `abc123-def456-ghi789`)
+**Important**: Set up environment variables in your actual services FIRST, then Railway will include them in the template.
+
+### In Web API Service:
+
+1. **Go to web-api service → "Variables" tab**
+2. **Add/Reference these variables**:
+
+   - `JWT_SECRET`: Click "Generate" or "New Variable" → Generate a secret (Railway will remember this pattern)
+   - `RAILWAY_BUCKET_NAME`: Click "Reference" → Select your Bucket service → Choose bucket name variable
+   - `RAILWAY_BUCKET_ENDPOINT`: Reference from Bucket service
+   - `RAILWAY_BUCKET_ACCESS_KEY`: Reference from Bucket service (might be `AWS_ACCESS_KEY_ID`)
+   - `RAILWAY_BUCKET_SECRET_KEY`: Reference from Bucket service (might be `AWS_SECRET_ACCESS_KEY`)
+   - `RAILWAY_BUCKET_REGION`: Set value to `us-east-1`
+   - `CORS_ORIGINS`: Set value to `*`
+
+3. **`DATABASE_URL` is automatically set** by Railway from Postgres service (you'll see it as a reference)
+
+### In Worker Service:
+
+1. **Go to worker service → "Variables" tab**
+2. **Copy all the same variables** from web-api service (or reference them)
+
+**Note**: The variables you see (`RAILWAY_PROJECT_NAME`, etc.) are Railway's built-in variables. You need to ADD your custom variables (`JWT_SECRET`, bucket vars, etc.) manually.
+
+---
+
+## Step 5: Create the Template
+
+Now that your services are configured, create the template:
+
+1. **Go to Project Settings → Template section**
+2. **Click "Create Template"** or **"Publish Template"**
+3. **Fill in template details**:
+   - **Template Name**: `Render Video API`
+   - **Short Description**: `Deploy and Host Render Video API with Railway`
+   - **Overview**: Copy from `TEMPLATE_DESCRIPTION.md`
+   - **Repository**: `juppfy/render-video-api` (or your repo)
+
+4. **Railway will detect**:
+   - All your services and their configurations
+   - Environment variables you've set up
+   - Start commands and settings
+
+5. **In the template configuration**, look for variable settings:
+   - Find `JWT_SECRET` and set it to **"Generate"** or **"Auto-generate"**
+   - Other variables should be marked as **"Reference"** from their respective services
+
+---
+
+## Step 6: Publish the Template
+
+1. **Review the template configuration** Railway shows you
+2. **Verify**:
+   - All 4 services are included (web-api, worker, postgres, bucket)
+   - Start commands are correct
+   - Variables are properly configured
+3. **Click "Publish Template"** or **"Create Template"**
+4. **Railway will process and publish your template**
+5. **You'll receive a Template ID** (looks like: `abc123-def456-ghi789`)
 
 **Save this Template ID!** You'll need it for the deploy button.
 
 ---
 
-## Step 6: Update Your README with Deploy Button
+## Important Notes About Railway Template Variables
+
+**What you're seeing** (`RAILWAY_PROJECT_NAME`, etc.) are Railway's **built-in system variables**. These are automatically available and you don't need to configure them.
+
+**What you need to do**:
+1. **Add your custom variables** (`JWT_SECRET`, bucket vars) in the actual services FIRST
+2. **Then** Railway will detect them when creating the template
+3. **In the template**, configure `JWT_SECRET` to auto-generate
+4. **Other variables** will be auto-referenced from services
+
+If Railway's template UI doesn't show variable configuration options, it means Railway will:
+- Auto-detect variables from your services
+- Auto-generate secrets where needed
+- Auto-reference service variables
+
+This is actually better - Railway handles everything automatically!
+
+---
+
+## Step 7: Update Your README with Deploy Button
 
 1. **Open your GitHub repository**
 2. **Edit `README.md`**
@@ -113,7 +173,7 @@ Railway will show you the services that will be created:
 
 ---
 
-## Step 7: Test the Template (Important!)
+## Step 8: Test the Template (Important!)
 
 Before sharing, test that the template works:
 
@@ -133,7 +193,7 @@ If everything works, your template is ready! 🎉
 
 ---
 
-## Step 8: Share Your Template
+## Step 9: Share Your Template
 
 Now others can:
 
