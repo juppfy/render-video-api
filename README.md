@@ -4,6 +4,12 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## 🚀 One-Click Deploy
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/juppfy/render-video-api)
+
+> **Note**: If a template isn't available yet, follow the [Deployment Guide](DEPLOYMENT.md) for manual setup. After deploying, you can create your own template for one-click deployments!
+
 ## 🎯 What is This?
 
 **Render Video API** is a lightweight, self-hostable service that lets you programmatically create videos from JSON specifications. It's designed for:

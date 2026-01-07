@@ -1,0 +1,46 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "name": "Render Video API",
+  "description": "Open-source JSON-to-Video API for rendering longform videos by merging backgrounds and audio files",
+  "services": [
+    {
+      "name": "web-api",
+      "source": ".",
+      "buildCommand": "npm run build && npm run prisma:generate",
+      "startCommand": "npm start"
+    },
+    {
+      "name": "worker",
+      "source": ".",
+      "buildCommand": "npm run build && npm run prisma:generate",
+      "startCommand": "npm run start:worker"
+    }
+  ],
+  "plugins": [
+    {
+      "name": "postgres",
+      "type": "postgresql"
+    },
+    {
+      "name": "bucket",
+      "type": "bucket"
+    }
+  ],
+  "variables": {
+    "JWT_SECRET": {
+      "required": true,
+      "description": "A random secret string for JWT token signing. Generate with: openssl rand -base64 32"
+    },
+    "CORS_ORIGINS": {
+      "required": false,
+      "default": "*",
+      "description": "CORS allowed origins (default: * for all origins)"
+    },
+    "RAILWAY_BUCKET_REGION": {
+      "required": false,
+      "default": "us-east-1",
+      "description": "Railway Bucket region"
+    }
+  }
+}
+

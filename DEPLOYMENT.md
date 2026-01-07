@@ -285,9 +285,55 @@ See `README.md` for API usage examples!
 
 ---
 
+---
+
+## Step 11: Create a Railway Template (Optional - For One-Click Deployment)
+
+After you've successfully deployed and configured everything, you can create a Railway template so others can deploy with one click:
+
+1. **In your Railway project dashboard**, go to "Settings" → "Template" (or look for "Publish Template" option)
+
+2. **Click "Create Template"** or "Publish Template" and fill in:
+   - **Template Name**: `Render Video API`
+   - **Description**: `Open-source JSON-to-Video API for rendering longform videos`
+   - **Repository**: Your GitHub repo URL
+   - **Icon** (optional): Upload a logo
+
+3. **Configure template variables**:
+   - Railway will detect all your services (web-api, worker, postgres, bucket)
+   - Set `JWT_SECRET` as a **required variable** that users must provide during deployment
+   - Bucket credentials and `DATABASE_URL` will be auto-generated for each deployment
+
+4. **Publish the template**:
+   - Click "Publish Template"
+   - Railway will give you a template ID (looks like: `abc123-def456`)
+
+5. **Add "Deploy on Railway" button to README**:
+   Update the README.md with your template ID:
+   ```markdown
+   [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/YOUR_TEMPLATE_ID)
+   ```
+
+### How Template Deployment Works
+
+When someone clicks "Deploy on Railway" with your template:
+1. ✅ Railway creates a new project with all services automatically:
+   - Web API service (runs `npm start`)
+   - Worker service (runs `npm run start:worker`)
+   - PostgreSQL database (auto-sets `DATABASE_URL`)
+   - Railway Bucket (auto-sets bucket credentials)
+2. ✅ User is prompted to set `JWT_SECRET` (only required input)
+3. ✅ Railway automatically builds and deploys everything
+4. ✅ User just needs to run migrations (Step 8) and they're done!
+
+**This makes deployment a one-click experience!** 🎉
+
+---
+
 ## Need Help?
 
 - Check Railway logs: Dashboard → Your Service → Deployments → View Logs
 - Check Railway docs: [docs.railway.app](https://docs.railway.app)
+- Railway Templates: [docs.railway.com/guides/publish-and-share](https://docs.railway.com/guides/publish-and-share)
 - Common issues: See Troubleshooting section above
 
