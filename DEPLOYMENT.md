@@ -1,32 +1,43 @@
 # Railway Deployment Guide
 
-This guide walks you through deploying the JSON-to-Video API to Railway step by step.
+This guide walks you through deploying your own instance of the JSON-to-Video API to Railway. Whether you've forked this repository or cloned it, follow these steps to get your own deployment running.
 
 ## Prerequisites
 
 - A GitHub account
 - A Railway account (sign up at [railway.app](https://railway.app))
-- Your code pushed to a GitHub repository
 
 ---
 
-## Step 1: Push Your Code to GitHub
+## Step 1: Get the Code on GitHub
 
-1. **Initialize Git** (if not already done):
+You have two options:
+
+### Option A: Fork the Repository (Recommended)
+
+1. **Fork the repository**:
+   - Go to [https://github.com/juppfy/render-video-api](https://github.com/juppfy/render-video-api)
+   - Click the "Fork" button in the top right
+   - This creates your own copy of the repository
+
+2. **Your fork is now ready** - you can proceed to Step 2
+
+### Option B: Clone and Push to Your Own Repository
+
+1. **Clone the repository**:
    ```bash
-   git init
-   git add .
-   git commit -m "Initial commit"
+   git clone https://github.com/juppfy/render-video-api.git
+   cd render-video-api
    ```
 
-2. **Create a GitHub repository**:
+2. **Create your own GitHub repository**:
    - Go to [github.com/new](https://github.com/new)
-   - Name it (e.g., `rendervideoapi`)
-   - Click "Create repository"
+   - Name it (e.g., `my-render-video-api`)
+   - Click "Create repository" (don't initialize with README)
 
-3. **Push your code**:
+3. **Push to your repository**:
    ```bash
-   git remote add origin https://github.com/YOUR_USERNAME/rendervideoapi.git
+   git remote set-url origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
    git branch -M main
    git push -u origin main
    ```
@@ -42,7 +53,7 @@ This guide walks you through deploying the JSON-to-Video API to Railway step by 
 2. **Create a new project**:
    - Click "New Project"
    - Select "Deploy from GitHub repo"
-   - Choose your `rendervideoapi` repository
+   - Choose your forked/cloned repository (or search for `render-video-api`)
    - Railway will start deploying automatically (it will fail until we add services, that's okay)
 
 ---
@@ -143,25 +154,15 @@ Railway needs to run **two processes**:
    - Set: `npm run start:worker`
    - Add the same environment variables (copy from main service)
 
-### Option B: Using Railway.json (Alternative)
+### Option B: Using Railway.json (Already Included)
 
-Create a `railway.json` file in your project root:
+The repository already includes a `railway.json` file that configures the build process. You just need to:
 
-```json
-{
-  "$schema": "https://railway.app/railway.schema.json",
-  "build": {
-    "builder": "NIXPACKS"
-  },
-  "deploy": {
-    "startCommand": "npm start",
-    "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 10
-  }
-}
-```
-
-Then create two services in Railway pointing to the same repo, with different start commands.
+1. Create two services in Railway pointing to the same repo
+2. Set different start commands:
+   - **Service 1 (Web API)**: `npm start`
+   - **Service 2 (Worker)**: `npm run start:worker`
+3. Copy all environment variables to both services
 
 ---
 
