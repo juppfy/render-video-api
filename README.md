@@ -8,6 +8,14 @@
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/juppfy/render-video-api)
 
+**Truly zero-config deployment!** Click the button above and Railway will:
+- ✅ Create all services (API, Worker, Database, Storage)
+- ✅ Auto-generate secrets
+- ✅ Run database migrations automatically
+- ✅ Deploy everything ready to use
+
+No manual configuration needed!
+
 > **Note**: If a template isn't available yet, follow the [Deployment Guide](DEPLOYMENT.md) for manual setup. After deploying, you can create your own template for one-click deployments!
 
 ## 🎯 What is This?

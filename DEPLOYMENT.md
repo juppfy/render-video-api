@@ -145,28 +145,17 @@ The repository already includes a `railway.json` file that configures the build 
 
 ---
 
-## Step 7: Run Database Migrations
+## Step 7: Verify Deployment
 
-After deployment, you need to create the database tables:
+**Note**: Database migrations run automatically during deployment! No manual steps needed.
 
-1. **In Railway**, click on your **code service**
-2. **Go to "Deployments" tab**
-3. **Click on the latest deployment** → "View Logs"
-4. **Open a shell/terminal** (Railway provides a terminal button)
-5. **Run**:
-   ```bash
-   npx prisma migrate deploy
-   ```
-   Or if that doesn't work:
-   ```bash
-   npx prisma db push
-   ```
+Railway will:
+1. Build your code
+2. Generate Prisma client
+3. Run migrations automatically (`npm run deploy`)
+4. Start the API server
 
-This creates all the database tables (User, ApiKey, Job, Asset).
-
----
-
-## Step 8: Verify Deployment
+You can verify this worked by checking the deployment logs.
 
 1. **Check your service URL**:
    - Railway gives you a URL like `https://your-app.up.railway.app`
@@ -189,7 +178,7 @@ This creates all the database tables (User, ApiKey, Job, Asset).
 
 ---
 
-## Step 9: Create Your First API Key
+## Step 8: Create Your First API Key
 
 1. **Login** (use the JWT token from Step 9):
    ```bash
@@ -268,7 +257,7 @@ See `README.md` for API usage examples!
 
 ---
 
-## Step 10: Create a Railway Template (Optional - For One-Click Deployment)
+## Step 9: Create a Railway Template (Optional - For One-Click Deployment)
 
 After you've successfully deployed and configured everything, you can create a Railway template so others can deploy with one click:
 
@@ -306,11 +295,12 @@ When someone clicks "Deploy on Railway" with your template:
    - Railway Bucket (auto-sets bucket credentials)
 2. ✅ Railway auto-generates `JWT_SECRET` (no user input needed!)
 3. ✅ Railway automatically builds and deploys everything
-4. ✅ User clicks one button and everything is ready!
+4. ✅ Database migrations run automatically during first deployment
+5. ✅ User clicks one button and everything is ready!
 
 **This is a true zero-configuration, one-click deployment!** 🎉
 
-> **Note**: After deployment, users only need to run migrations once (Step 8 below) via the Railway terminal, then they can start using the API immediately.
+> **Note**: Users can start using the API immediately after deployment completes. No manual steps required!
 
 ---
 
