@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  apiKeys ApiKey[]
+  jobs    Job[]
+  assets  Asset[]
+}
+
+model ApiKey {
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  name       String
+  keyHash    String
+  lastFour   String
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  lastUsedAt DateTime?
+}
+
+model Job {
+  id           String      @id @default(uuid())
+  user         User        @relation(fields: [userId], references: [id])
+  userId       String
+  status       JobStatus   @default(QUEUED)
+  type         String      @default("RENDER")
+  payload      Json
+  progress     Int         @default(0)
+  errorMessage String?
+  outputUrl    String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  startedAt    DateTime?
+  finishedAt   DateTime?
+}
+
+model Asset {
+  id              String   @id @default(uuid())
+  user            User     @relation(fields: [userId], references: [id])
+  userId          String
+  type            AssetType
+  bucketKey       String
+  publicUrl       String?
+  durationSeconds Float?
+  metadata        Json?
+  createdAt       DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum JobStatus {
+  QUEUED
+  PROCESSING
+  SUCCEEDED
+  FAILED
+}
+
+enum AssetType {
+  VIDEO
+  IMAGE
+  AUDIO
+}
+
+
