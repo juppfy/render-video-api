@@ -83,8 +83,8 @@ Before creating the template, configure each service's settings:
    - `JWT_SECRET`: Click "Generate" or "New Variable" → Generate a secret (Railway will remember this pattern)
    - `RAILWAY_BUCKET_NAME`: Click "Reference" → Select your Bucket service → Choose bucket name variable
    - `RAILWAY_BUCKET_ENDPOINT`: Reference from Bucket service
-   - `RAILWAY_BUCKET_ACCESS_KEY`: Reference from Bucket service (might be `AWS_ACCESS_KEY_ID`)
-   - `RAILWAY_BUCKET_SECRET_KEY`: Reference from Bucket service (might be `AWS_SECRET_ACCESS_KEY`)
+   - `RAILWAY_BUCKET_ACCESS_KEY`: Reference from Bucket service (might be `AWS_ACCESS_KEY_ID`) ${{AWS_ACCESS_KEY_ID}} 
+   - `RAILWAY_BUCKET_SECRET_KEY`: Reference from Bucket service (might be `${{AWS_SECRET_ACCESS_KEY}}  AWS_SECRET_ACCESS_KEY`)
    - `RAILWAY_BUCKET_REGION`: Set value to `us-east-1`
    - `CORS_ORIGINS`: Set value to `*`
 

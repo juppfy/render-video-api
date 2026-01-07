@@ -3,11 +3,13 @@ import fs from "fs";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-const bucketName = process.env.RAILWAY_BUCKET_NAME;
-const bucketEndpoint = process.env.RAILWAY_BUCKET_ENDPOINT;
-const bucketRegion = process.env.RAILWAY_BUCKET_REGION ?? "us-east-1";
-const accessKeyId = process.env.RAILWAY_BUCKET_ACCESS_KEY;
-const secretAccessKey = process.env.RAILWAY_BUCKET_SECRET_KEY;
+// Railway Bucket variables - supports both custom names and Railway's standard names
+const bucketName = process.env.RAILWAY_BUCKET_NAME || process.env.BUCKET_NAME;
+const bucketEndpoint = process.env.RAILWAY_BUCKET_ENDPOINT || process.env.BUCKET_ENDPOINT;
+const bucketRegion = process.env.RAILWAY_BUCKET_REGION || process.env.BUCKET_REGION || "us-east-1";
+// Railway Bucket uses AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY by default
+const accessKeyId = process.env.RAILWAY_BUCKET_ACCESS_KEY || process.env.AWS_ACCESS_KEY_ID;
+const secretAccessKey = process.env.RAILWAY_BUCKET_SECRET_KEY || process.env.AWS_SECRET_ACCESS_KEY;
 
 if (!bucketName || !bucketEndpoint || !accessKeyId || !secretAccessKey) {
   // eslint-disable-next-line no-console
